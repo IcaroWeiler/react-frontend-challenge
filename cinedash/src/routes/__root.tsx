@@ -7,6 +7,7 @@ import {
 
 import appCss from '#/app/theme/styles/styles.css?url'
 import { ThemeProvider } from '#/app/theme/providers/theme'
+import { ANTI_FLICKER_THEME_SCRIPT } from '#/app/theme/helpers/themeHelper'
 
 export const Route = createRootRoute({
   head: () => ({
@@ -36,6 +37,11 @@ function RootDocument() {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: ANTI_FLICKER_THEME_SCRIPT,
+          }}
+        />
         <HeadContent />
       </head>
       <body className="font-sans antialiased [overflow-wrap:anywhere] selection:bg-[rgba(79,184,178,0.24)]">

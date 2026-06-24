@@ -1,4 +1,3 @@
-import ThemeToggle from '#/components/ThemeToggle'
 import { LoginForm } from '#/features/login/form'
 
 export function Login() {

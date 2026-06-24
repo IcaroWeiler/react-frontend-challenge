@@ -13,3 +13,20 @@ export const applyTheme = (theme: string) => {
     root?.classList.add('light')
   }
 }
+
+export const ANTI_FLICKER_THEME_SCRIPT = `
+              (function() {
+                try {
+                  const themeData = localStorage.getItem('theme');
+                  if (themeData) {
+                    const parsed = JSON.parse(themeData);
+                    const theme = parsed.state?.theme || 'light';
+                    document.documentElement.classList.add(theme);
+                  } else {
+                    document.documentElement.classList.add('light');
+                  }
+                } catch (e) {
+                  document.documentElement.classList.add('light');
+                }
+              })();
+            `
