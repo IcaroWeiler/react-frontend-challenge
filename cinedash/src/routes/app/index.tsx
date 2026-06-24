@@ -1,3 +1,4 @@
+import { useAuthStore } from '#/features/auth/model/store/authStore'
 import Footer from '#/shared/Footer'
 import Header from '#/shared/Header'
 import { createFileRoute, Outlet } from '@tanstack/react-router'
@@ -8,12 +9,12 @@ export const Route = createFileRoute('/app/')({
 })
 
 function RouteComponent() {
+  const token = useAuthStore.getState().token
   useEffect(() => {
-    // const token = localStorage.getItem('token')
-    // if (!token) {
-    //   window.location.href = '/login'
-    // }
-  }, [])
+    if (!token) {
+      window.location.href = '/login'
+    }
+  }, [token])
 
   return (
     <>
