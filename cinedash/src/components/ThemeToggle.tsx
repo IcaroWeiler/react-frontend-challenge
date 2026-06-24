@@ -4,15 +4,15 @@ type ThemeMode = 'light' | 'dark' | 'auto'
 
 function getInitialMode(): ThemeMode {
   if (typeof window === 'undefined') {
-    return 'auto'
+    return 'light'
   }
 
   const stored = window.localStorage.getItem('theme')
   if (stored === 'light' || stored === 'dark' || stored === 'auto') {
-    return stored
+    return 'light'
   }
 
-  return 'auto'
+  return 'light'
 }
 
 function applyThemeMode(mode: ThemeMode) {
