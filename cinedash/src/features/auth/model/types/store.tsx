@@ -1,4 +1,6 @@
 export interface AuthStore {
   token: string
-  setToken: (token: string) => void
+  isLoggedIn: boolean
+  login: (token: string) => void
+  logout: () => void
 }

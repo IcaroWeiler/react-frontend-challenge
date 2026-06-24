@@ -11,10 +11,10 @@ export function generateBrowserToken(user: LoginFormData) {
 
 export function logInUser(token: string) {
   const authStore = useAuthStore.getState()
-  authStore.setToken(token)
+  authStore.login(token)
 }
 
 export function logOutUser() {
   const authStore = useAuthStore.getState()
-  authStore.setToken('')
+  authStore.logout()
 }

@@ -8,13 +8,13 @@ export const Route = createFileRoute('/login/')({
 })
 
 function RouteComponent() {
-  const token = useAuthStore((state) => state.token)
+  const isLoggedIn = useAuthStore((state) => state.isLoggedIn)
 
   useEffect(() => {
-    if (token) {
+    if (isLoggedIn) {
       window.location.href = '/app'
     }
-  }, [token])
+  }, [isLoggedIn])
 
   return <Login></Login>
 }
