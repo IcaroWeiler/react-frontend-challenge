@@ -1,4 +1,4 @@
-import { LoginForm } from '#/features/auth/ui/form'
+import { LoginForm } from '#/features/auth/ui/loginForm'
 
 export function Login() {
   return (
