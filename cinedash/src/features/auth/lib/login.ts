@@ -18,3 +18,8 @@ export function logOutUser() {
   const authStore = useAuthStore.getState()
   authStore.logout()
 }
+
+export function isUserLoggedIn() {
+  const authStore = useAuthStore.getState()
+  return !!authStore.token
+}
