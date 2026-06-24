@@ -1,6 +1,6 @@
 import { useThemeStore, type ThemeStore } from '#/app/theme/store/themeStore'
+import { Button } from '#/shared/components/ui/button'
 import { Moon, Sun } from 'lucide-react'
-import { Button } from './button'
 
 export const ThemeSelector = () => {
   const theme = useThemeStore((state: ThemeStore) => state)
