@@ -1,6 +1,6 @@
-import { Button } from '#/components/ui/button'
-import { Input } from '#/components/ui/input'
-import { ThemeSelector } from '#/components/ui/themeselector'
+import { Button } from '#/shared/components/ui/button'
+import { Input } from '#/shared/components/ui/input'
+import { ThemeSelector } from '#/shared/components/ui/themeselector'
 
 export function LoginForm() {
   return (

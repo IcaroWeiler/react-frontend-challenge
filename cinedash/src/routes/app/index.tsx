@@ -1,5 +1,5 @@
-import Footer from '#/components/Footer'
-import Header from '#/components/Header'
+import Footer from '#/shared/Footer'
+import Header from '#/shared/Header'
 import { createFileRoute, Outlet } from '@tanstack/react-router'
 import { useEffect } from 'react'
 

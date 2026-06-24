@@ -12,9 +12,6 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as LoginIndexRouteImport } from './routes/login/index'
 import { Route as AppIndexRouteImport } from './routes/app/index'
-import { Route as DemoTableRouteImport } from './routes/demo/table'
-import { Route as DemoFormSimpleRouteImport } from './routes/demo/form.simple'
-import { Route as DemoFormAddressRouteImport } from './routes/demo/form.address'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -31,81 +28,35 @@ const AppIndexRoute = AppIndexRouteImport.update({
   path: '/app/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DemoTableRoute = DemoTableRouteImport.update({
-  id: '/demo/table',
-  path: '/demo/table',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DemoFormSimpleRoute = DemoFormSimpleRouteImport.update({
-  id: '/demo/form/simple',
-  path: '/demo/form/simple',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DemoFormAddressRoute = DemoFormAddressRouteImport.update({
-  id: '/demo/form/address',
-  path: '/demo/form/address',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/demo/table': typeof DemoTableRoute
   '/app/': typeof AppIndexRoute
   '/login/': typeof LoginIndexRoute
-  '/demo/form/address': typeof DemoFormAddressRoute
-  '/demo/form/simple': typeof DemoFormSimpleRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/demo/table': typeof DemoTableRoute
   '/app': typeof AppIndexRoute
   '/login': typeof LoginIndexRoute
-  '/demo/form/address': typeof DemoFormAddressRoute
-  '/demo/form/simple': typeof DemoFormSimpleRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
-  '/demo/table': typeof DemoTableRoute
   '/app/': typeof AppIndexRoute
   '/login/': typeof LoginIndexRoute
-  '/demo/form/address': typeof DemoFormAddressRoute
-  '/demo/form/simple': typeof DemoFormSimpleRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | '/demo/table'
-    | '/app/'
-    | '/login/'
-    | '/demo/form/address'
-    | '/demo/form/simple'
+  fullPaths: '/' | '/app/' | '/login/'
   fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | '/demo/table'
-    | '/app'
-    | '/login'
-    | '/demo/form/address'
-    | '/demo/form/simple'
-  id:
-    | '__root__'
-    | '/'
-    | '/demo/table'
-    | '/app/'
-    | '/login/'
-    | '/demo/form/address'
-    | '/demo/form/simple'
+  to: '/' | '/app' | '/login'
+  id: '__root__' | '/' | '/app/' | '/login/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
-  DemoTableRoute: typeof DemoTableRoute
   AppIndexRoute: typeof AppIndexRoute
   LoginIndexRoute: typeof LoginIndexRoute
-  DemoFormAddressRoute: typeof DemoFormAddressRoute
-  DemoFormSimpleRoute: typeof DemoFormSimpleRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -131,37 +82,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/demo/table': {
-      id: '/demo/table'
-      path: '/demo/table'
-      fullPath: '/demo/table'
-      preLoaderRoute: typeof DemoTableRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/demo/form/simple': {
-      id: '/demo/form/simple'
-      path: '/demo/form/simple'
-      fullPath: '/demo/form/simple'
-      preLoaderRoute: typeof DemoFormSimpleRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/demo/form/address': {
-      id: '/demo/form/address'
-      path: '/demo/form/address'
-      fullPath: '/demo/form/address'
-      preLoaderRoute: typeof DemoFormAddressRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
-  DemoTableRoute: DemoTableRoute,
   AppIndexRoute: AppIndexRoute,
   LoginIndexRoute: LoginIndexRoute,
-  DemoFormAddressRoute: DemoFormAddressRoute,
-  DemoFormSimpleRoute: DemoFormSimpleRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
