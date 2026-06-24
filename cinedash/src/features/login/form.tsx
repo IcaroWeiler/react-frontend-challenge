@@ -1,20 +1,19 @@
-import { useThemeStore, type ThemeStore } from '#/app/theme/store/themeStore'
 import { Button } from '#/components/ui/button'
 import { Input } from '#/components/ui/input'
+import { ThemeSelector } from '#/components/ui/themeselector'
 
 export function LoginForm() {
-  const theme = useThemeStore((state: ThemeStore) => state)
-
   return (
     <div className="flex flex-col gap-2 items-center justify-center p-4">
-      <Input type="text" placeholder="Username" />
-      <Input type="password" placeholder="Password" />
-      <Button onClick={() => {}} className="p-2">
-        Login
-      </Button>
-      <Button onClick={() => theme.toggleTheme()} className="p-2">
-        Swap Theme
-      </Button>
+      <Input type="text" placeholder="Email" />
+      <Input type="password" placeholder="Senha" />
+
+      <div className="flex gap-2 mt-3 items-center justify-center">
+        <Button onClick={() => {}} className="p-2">
+          Entrar
+        </Button>
+        <ThemeSelector />
+      </div>
     </div>
   )
 }
