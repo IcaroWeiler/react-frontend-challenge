@@ -6,21 +6,21 @@ const columnHelper = createColumnHelper<Movie>()
 
 export const columns = [
   columnHelper.accessor('title', {
-    header: () => 'Título',
+    header: () => 'Title',
     cell: (info) => info.getValue(),
   }),
   columnHelper.accessor((row) => row.release_date, {
     id: 'release_date',
     cell: (info) => <i>{info.getValue()}</i>,
-    header: () => 'Data de lançamento',
+    header: () => 'Release Date',
   }),
   columnHelper.accessor('vote_average', {
-    header: () => 'Média de Votos',
-    cell: (info) => info.renderValue(),
+    header: () => 'Average Rating',
+    cell: (info) => info.renderValue()?.toFixed(2),
   }),
 
   columnHelper.accessor('genre_ids', {
-    header: () => 'Gêneros',
+    header: () => 'Genres',
     cell: (info) => {
       const genreIds = info.getValue()
       if (!genreIds) return null

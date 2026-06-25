@@ -50,7 +50,7 @@ export function LoginForm() {
 
       <Input
         type="password"
-        placeholder="Senha"
+        placeholder="Password"
         value={formState.password}
         onChange={(e) =>
           setFormState({ ...formState, password: e.target.value })
@@ -63,7 +63,7 @@ export function LoginForm() {
 
       <div className="flex gap-2 mt-3 items-center justify-center">
         <Button onClick={handleLogin} className="p-2">
-          Entrar
+          Login
         </Button>
         <ThemeSelector />
       </div>

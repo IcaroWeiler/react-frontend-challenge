@@ -18,25 +18,24 @@ export default function Header() {
 
         <div className="order-3 flex w-full flex-wrap items-center gap-x-4 gap-y-1 pb-1 text-sm font-semibold sm:order-none sm:w-auto sm:flex-nowrap sm:pb-0">
           <Link
-            to="/"
+            to="/app/discovery"
             className="nav-link"
             activeProps={{ className: 'nav-link is-active' }}
           >
-            Descoberta
+            Discovery
           </Link>
           <Link
             to="/"
             className="nav-link"
             activeProps={{ className: 'nav-link is-active' }}
           >
-            Minha Lista
+            My List
           </Link>
         </div>
 
         <div className="ml-auto flex items-center gap-1.5 sm:gap-2">
-          <LogoutButton />
-
           <ThemeSelector />
+          <LogoutButton />
         </div>
       </nav>
     </header>

@@ -6,7 +6,7 @@ export const LogoutButton = () => {
 
   return (
     <Button onClick={logout} className="text-sm">
-      Sair
+      Logout
     </Button>
   )
 }
