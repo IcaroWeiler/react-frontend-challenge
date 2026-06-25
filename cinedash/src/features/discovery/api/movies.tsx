@@ -1,5 +1,5 @@
 import { HEADERS } from '#/shared/api/tmdbAuth'
-import type { Movie } from '../models/types/movie'
+import type { Movie } from '../../../shared/models/types/movie'
 
 const TMDB_BASE_URL = 'https://api.themoviedb.org/3'
 const TMDB_TREND_ENDPOINT = '/trending/movie/week'

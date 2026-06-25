@@ -1,6 +1,6 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
-import type { Movie } from '#/features/discovery/models/types/movie'
+import type { Movie } from '#/shared/models/types/movie'
 
 interface WatchlistState {
   movies: Movie[]

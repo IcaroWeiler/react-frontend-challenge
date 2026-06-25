@@ -1,5 +1,5 @@
 import { createColumnHelper } from '@tanstack/react-table'
-import type { Movie } from '../models/types/movie'
+import type { Movie } from '../../../shared/models/types/movie'
 import { getGenreNameById } from '../models/genres/genres'
 import { Button } from '#/shared/components/ui/button'
 import { useWatchlistStore } from '#/features/watchlist/store/watchlist'

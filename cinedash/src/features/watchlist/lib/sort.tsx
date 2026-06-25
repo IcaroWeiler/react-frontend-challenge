@@ -1,4 +1,4 @@
-import type { Movie } from '#/features/discovery/models/types/movie'
+import type { Movie } from '#/shared/models/types/movie'
 import { getGenreNameById } from '#/features/discovery/models/genres/genres'
 
 export type SortKey = 'title' | 'genre' | 'rating'
