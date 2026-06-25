@@ -1,27 +1,19 @@
+import { HEADERS } from '#/shared/api/tmdbAuth'
+import type { Movie } from '../models/types/movie'
+
 const TMDB_BASE_URL = 'https://api.themoviedb.org/3'
-const TMDB_CHANGES_ENDPOINT = '/movie/changes'
+const TMDB_TREND_ENDPOINT = '/trending/movie/week'
 
-const getTmdbApiKey = () => {
-  const apiKey = import.meta.env.VITE_TMDB_API_KEY
-
-  if (!apiKey || typeof apiKey !== 'string') {
-    throw new Error('TMDB API key is not defined in VITE_TMDB_API_KEY')
-  }
-
-  return apiKey
-}
-
-export type TmdbMovieChangesResponse = {
-  results: Array<Record<string, unknown>>
+export type TmdbMovieTrendResponse = {
+  results: Movie[]
   page: number
   total_pages: number
   total_results: number
 }
 
-export async function fetchTmdbMovieChanges(
+export async function fetchTmdbMovieTrend(
   params: Record<string, string | number | boolean> = {},
-): Promise<TmdbMovieChangesResponse> {
-  const apiKey = getTmdbApiKey()
+): Promise<TmdbMovieTrendResponse> {
   const queryString = new URLSearchParams(
     Object.entries(params).reduce<Record<string, string>>(
       (acc, [key, value]) => {
@@ -33,12 +25,9 @@ export async function fetchTmdbMovieChanges(
   )
 
   const response = await fetch(
-    `${TMDB_BASE_URL}${TMDB_CHANGES_ENDPOINT}?${queryString.toString()}`,
+    `${TMDB_BASE_URL}${TMDB_TREND_ENDPOINT}?${queryString.toString()}`,
     {
-      headers: {
-        Authorization: `Bearer ${apiKey}`,
-        'Content-Type': 'application/json',
-      },
+      headers: HEADERS,
     },
   )
 

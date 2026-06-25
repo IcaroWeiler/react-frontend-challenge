@@ -1,15 +1,9 @@
-import { fetchTmdbMovieChanges } from '#/features/discovery/api/movies'
-import { QueryClient } from '@tanstack/react-query'
-import { useEffect } from 'react'
+import { MoviesTable } from '#/features/discovery/ui/table'
 
 export function DiscoveryPage() {
-  const queryClient = new QueryClient()
-
-  useEffect(() => {
-    fetchTmdbMovieChanges().then((data) => {
-      console.log('TMDB Movie Changes:', data)
-    })
-  }, [])
-
-  return <div className="flex flex-col">discovery</div>
+  return (
+    <div className="flex flex-col max-w-7xl max-h-3xl mx-auto gap-4 p-4">
+      <MoviesTable />
+    </div>
+  )
 }
