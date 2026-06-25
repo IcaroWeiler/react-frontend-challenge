@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as AppRouteRouteImport } from './routes/app/route'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as LoginIndexRouteImport } from './routes/login/index'
+import { Route as AppWatchlistRouteRouteImport } from './routes/app/watchlist/route'
 import { Route as AppDiscoveryRouteRouteImport } from './routes/app/discovery/route'
 
 const AppRouteRoute = AppRouteRouteImport.update({
@@ -29,6 +30,11 @@ const LoginIndexRoute = LoginIndexRouteImport.update({
   path: '/login/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AppWatchlistRouteRoute = AppWatchlistRouteRouteImport.update({
+  id: '/watchlist',
+  path: '/watchlist',
+  getParentRoute: () => AppRouteRoute,
+} as any)
 const AppDiscoveryRouteRoute = AppDiscoveryRouteRouteImport.update({
   id: '/discovery',
   path: '/discovery',
@@ -39,12 +45,14 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/app': typeof AppRouteRouteWithChildren
   '/app/discovery': typeof AppDiscoveryRouteRoute
+  '/app/watchlist': typeof AppWatchlistRouteRoute
   '/login/': typeof LoginIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/app': typeof AppRouteRouteWithChildren
   '/app/discovery': typeof AppDiscoveryRouteRoute
+  '/app/watchlist': typeof AppWatchlistRouteRoute
   '/login': typeof LoginIndexRoute
 }
 export interface FileRoutesById {
@@ -52,14 +60,21 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/app': typeof AppRouteRouteWithChildren
   '/app/discovery': typeof AppDiscoveryRouteRoute
+  '/app/watchlist': typeof AppWatchlistRouteRoute
   '/login/': typeof LoginIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/app' | '/app/discovery' | '/login/'
+  fullPaths: '/' | '/app' | '/app/discovery' | '/app/watchlist' | '/login/'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/app' | '/app/discovery' | '/login'
-  id: '__root__' | '/' | '/app' | '/app/discovery' | '/login/'
+  to: '/' | '/app' | '/app/discovery' | '/app/watchlist' | '/login'
+  id:
+    | '__root__'
+    | '/'
+    | '/app'
+    | '/app/discovery'
+    | '/app/watchlist'
+    | '/login/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -91,6 +106,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/app/watchlist': {
+      id: '/app/watchlist'
+      path: '/watchlist'
+      fullPath: '/app/watchlist'
+      preLoaderRoute: typeof AppWatchlistRouteRouteImport
+      parentRoute: typeof AppRouteRoute
+    }
     '/app/discovery': {
       id: '/app/discovery'
       path: '/discovery'
@@ -103,10 +125,12 @@ declare module '@tanstack/react-router' {
 
 interface AppRouteRouteChildren {
   AppDiscoveryRouteRoute: typeof AppDiscoveryRouteRoute
+  AppWatchlistRouteRoute: typeof AppWatchlistRouteRoute
 }
 
 const AppRouteRouteChildren: AppRouteRouteChildren = {
   AppDiscoveryRouteRoute: AppDiscoveryRouteRoute,
+  AppWatchlistRouteRoute: AppWatchlistRouteRoute,
 }
 
 const AppRouteRouteWithChildren = AppRouteRoute._addFileChildren(

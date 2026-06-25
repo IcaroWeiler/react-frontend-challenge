@@ -25,7 +25,7 @@ export default function Header() {
             Discovery
           </Link>
           <Link
-            to="/"
+            to="/app/watchlist"
             className="nav-link"
             activeProps={{ className: 'nav-link is-active' }}
           >
