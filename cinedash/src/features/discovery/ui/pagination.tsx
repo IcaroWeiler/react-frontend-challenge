@@ -1,4 +1,5 @@
 import { Button } from '#/shared/components/ui/button'
+import { Skeleton } from '#/shared/components/ui/skeleton'
 import { type Table } from '@tanstack/react-table'
 import {
   ChevronLeft,
@@ -9,11 +10,28 @@ import {
 
 interface DataTablePaginationProps<TData> {
   table: Table<TData>
+  isLoading?: boolean
 }
 
 export function DataTablePagination<TData>({
   table,
+  isLoading = false,
 }: DataTablePaginationProps<TData>) {
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-between px-2">
+        <div className="flex items-center gap-3">
+          <Skeleton className="h-8 w-24" />
+          <Skeleton className="h-8 w-20" />
+          <Skeleton className="h-8 w-8" />
+          <Skeleton className="h-8 w-8" />
+          <Skeleton className="h-8 w-8" />
+          <Skeleton className="h-8 w-8" />
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="flex items-center justify-between px-2">
       <div className="flex items-center space-x-6 lg:space-x-8">

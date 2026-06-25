@@ -18,6 +18,7 @@ import { useQuery } from '@tanstack/react-query'
 import { fetchTmdbDiscoverMovies } from '../api/movies'
 import { useState } from 'react'
 import type { Filter } from '../models/types/filter'
+import { Skeleton } from '#/shared/components/ui/skeleton'
 
 interface MoviesTableProps {
   filters: Partial<Filter>
@@ -29,7 +30,7 @@ export function MoviesTable({ filters }: MoviesTableProps) {
     pageSize: 10,
   })
 
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: [
       'movies',
       pagination.pageIndex,
@@ -84,7 +85,17 @@ export function MoviesTable({ filters }: MoviesTableProps) {
         </TableHeader>
 
         <TableBody>
-          {table.getRowModel().rows?.length ? (
+          {isLoading ? (
+            Array.from({ length: pagination.pageSize }).map((_, index) => (
+              <TableRow key={`skeleton-${index}`}>
+                {columns.map((_, columnIndex) => (
+                  <TableCell key={`${index}-${columnIndex}`}>
+                    <Skeleton className="h-6 w-full" />
+                  </TableCell>
+                ))}
+              </TableRow>
+            ))
+          ) : table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (
               <TableRow
                 key={row.id}
@@ -106,7 +117,7 @@ export function MoviesTable({ filters }: MoviesTableProps) {
           )}
         </TableBody>
 
-        <DataTablePagination table={table} />
+        <DataTablePagination table={table} isLoading={isLoading} />
       </Table>
     </div>
   )
