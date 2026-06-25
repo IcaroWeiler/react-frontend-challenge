@@ -15,20 +15,37 @@ import {
 } from '#/shared/components/ui/table'
 import { DataTablePagination } from './pagination'
 import { useQuery } from '@tanstack/react-query'
-import { fetchTmdbMovieTrend } from '../api/movies'
+import { fetchTmdbDiscoverMovies } from '../api/movies'
 import { useState } from 'react'
+import type { Filter } from '../models/types/filter'
 
-export function MoviesTable() {
+interface MoviesTableProps {
+  filters: Partial<Filter>
+}
+
+export function MoviesTable({ filters }: MoviesTableProps) {
   const [pagination, setPagination] = useState({
     pageIndex: 0,
     pageSize: 10,
   })
 
   const { data } = useQuery({
-    queryKey: ['movies', pagination.pageIndex, pagination.pageSize],
+    queryKey: [
+      'movies',
+      pagination.pageIndex,
+      pagination.pageSize,
+      filters.with_genres ?? '',
+      filters['vote_average.gte'] ?? '',
+      filters['release_date.gte']?.toISOString() ?? '',
+      filters['release_date.lte']?.toISOString() ?? '',
+    ],
     queryFn: () =>
-      fetchTmdbMovieTrend({
+      fetchTmdbDiscoverMovies({
         page: pagination.pageIndex + 1,
+        with_genres: filters.with_genres || undefined,
+        'vote_average.gte': filters['vote_average.gte'] || undefined,
+        'release_date.gte': filters['release_date.gte'] || undefined,
+        'release_date.lte': filters['release_date.lte'] || undefined,
       }),
   })
 

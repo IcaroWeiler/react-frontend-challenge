@@ -8,29 +8,32 @@ import {
   ComboboxItem,
   ComboboxList,
 } from '#/shared/components/ui/combobox'
-import { useEffect, useState } from 'react'
 import { genres } from '../models/genres/genres'
 import { DatePicker } from '#/shared/components/ui/datepicker'
 import type { Filter } from '../models/types/filter'
 
-export const Filters = () => {
-  const [filter, setFilter] = useState<Partial<Filter>>({})
-  const [selectedGenres, setSelectedGenres] = useState<string[]>([])
+interface FiltersProps {
+  filters: Partial<Filter>
+  onFiltersChange: (filters: Partial<Filter>) => void
+}
 
+export const Filters = ({ filters, onFiltersChange }: FiltersProps) => {
   const ONLY_NUMBERS_REGEX = /^\d*$/
 
+  const selectedGenres = (filters.with_genres ?? '').split(',').filter(Boolean)
+
   const handleGenreChange = (value: string[]) => {
-    setSelectedGenres(value)
-    setFilter((prev) => ({ ...prev, with_genres: value.join(',') }))
+    onFiltersChange({ ...filters, with_genres: value.join(',') })
   }
 
   const handleMinRatingChange = (value: string) => {
-    setFilter((prev) => ({ ...prev, 'vote_average.gte': value }))
+    onFiltersChange({ ...filters, 'vote_average.gte': value })
   }
 
-  useEffect(() => {
-    console.log('Filter changed:', filter)
-  }, [filter])
+  const handleDateChange =
+    (key: 'release_date.gte' | 'release_date.lte') => (date?: Date) => {
+      onFiltersChange({ ...filters, [key]: date })
+    }
 
   return (
     <div className="flex gap-4">
@@ -63,7 +66,7 @@ export const Filters = () => {
       </Combobox>
 
       <Input
-        value={filter['vote_average.gte']}
+        value={filters['vote_average.gte'] ?? ''}
         onChange={(e) => {
           const value = e.target.value
 
@@ -76,8 +79,16 @@ export const Filters = () => {
         maxLength={2}
       />
 
-      <DatePicker placeholder="Initial Date" />
-      <DatePicker placeholder="Final Date" />
+      <DatePicker
+        placeholder="Initial Date"
+        value={filters['release_date.gte'] as Date | undefined}
+        onChange={handleDateChange('release_date.gte')}
+      />
+      <DatePicker
+        placeholder="Final Date"
+        value={filters['release_date.lte'] as Date | undefined}
+        onChange={handleDateChange('release_date.lte')}
+      />
     </div>
   )
 }
