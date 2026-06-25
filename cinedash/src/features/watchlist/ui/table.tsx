@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react'
-import type { Movie } from '#/features/discovery/models/types/movie'
 import { getGenreNameById } from '#/features/discovery/models/genres/genres'
+import { sortMovies, type SortDirection, type SortKey } from '../lib/sort'
 import {
   Table,
   TableBody,
@@ -10,68 +10,16 @@ import {
   TableRow,
 } from '#/shared/components/ui/table'
 import { Button } from '#/shared/components/ui/button'
-
-const mockMovies: Movie[] = [
-  {
-    id: 1,
-    title: 'Interstellar',
-    release_date: '2014-11-07',
-    vote_average: 8.6,
-    genre_ids: [12, 18, 878],
-  },
-  {
-    id: 2,
-    title: 'Parasite',
-    release_date: '2019-05-30',
-    vote_average: 8.5,
-    genre_ids: [35, 18, 53],
-  },
-  {
-    id: 3,
-    title: 'Arrival',
-    release_date: '2016-11-11',
-    vote_average: 7.9,
-    genre_ids: [18, 878, 53],
-  },
-  {
-    id: 4,
-    title: 'Dune',
-    release_date: '2021-09-15',
-    vote_average: 8.1,
-    genre_ids: [878, 12],
-  },
-]
-
-type SortKey = 'title' | 'genre' | 'rating'
-
-type SortDirection = 'asc' | 'desc'
+import { useWatchlistStore } from '../store/watchlist'
 
 export function WatchlistTable() {
   const [sortKey, setSortKey] = useState<SortKey>('title')
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc')
+  const { movies, removeMovie } = useWatchlistStore()
 
   const sortedMovies = useMemo(() => {
-    const sorted = [...mockMovies]
-
-    sorted.sort((a, b) => {
-      if (sortKey === 'title') {
-        return a.title.localeCompare(b.title)
-      }
-
-      if (sortKey === 'genre') {
-        const aGenre = a.genre_ids?.[0]
-        const bGenre = b.genre_ids?.[0]
-        const aName = aGenre ? (getGenreNameById(aGenre) ?? '') : ''
-        const bName = bGenre ? (getGenreNameById(bGenre) ?? '') : ''
-
-        return aName.localeCompare(bName)
-      }
-
-      return a.vote_average - b.vote_average
-    })
-
-    return sortDirection === 'desc' ? sorted.reverse() : sorted
-  }, [sortDirection, sortKey])
+    return sortMovies(movies, sortKey, sortDirection)
+  }, [sortDirection, sortKey, movies])
 
   const handleSort = (key: SortKey) => {
     if (sortKey === key) {
@@ -101,6 +49,7 @@ export function WatchlistTable() {
         <TableHeader>
           <TableRow>
             <TableHead>Title</TableHead>
+            <TableHead>Release Date</TableHead>
             <TableHead>Genres</TableHead>
             <TableHead>Rating</TableHead>
             <TableHead className="text-center">Remove</TableHead>
@@ -110,6 +59,7 @@ export function WatchlistTable() {
           {sortedMovies.map((movie) => (
             <TableRow key={movie.id}>
               <TableCell>{movie.title}</TableCell>
+              <TableCell>{movie.release_date}</TableCell>
               <TableCell>
                 {movie.genre_ids
                   ?.map((id) => getGenreNameById(id))
@@ -122,6 +72,7 @@ export function WatchlistTable() {
                   variant="outline"
                   size="icon"
                   aria-label={`Remove ${movie.title}`}
+                  onClick={() => removeMovie(movie.id)}
                 >
                   ×
                 </Button>
