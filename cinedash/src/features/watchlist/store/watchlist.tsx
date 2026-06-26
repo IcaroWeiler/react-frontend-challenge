@@ -62,10 +62,13 @@ if (typeof window !== 'undefined') {
     }
 
     previousToken = state.token
-    useWatchlistStore.setState((current) => ({
-      ...current,
-      movies: [],
-    }))
+
+    const storageKey = getWatchlistStorageKey()
+
+    if (!localStorage.getItem(storageKey)) {
+      useWatchlistStore.setState({ movies: [] })
+    }
+
     void useWatchlistStore.persist.rehydrate()
   })
 }
