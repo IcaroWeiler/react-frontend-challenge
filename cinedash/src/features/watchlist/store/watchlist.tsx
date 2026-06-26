@@ -1,5 +1,6 @@
 import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
+import { createJSONStorage, persist } from 'zustand/middleware'
+import { useAuthStore } from '#/features/auth/model/store/authStore'
 import type { Movie } from '#/shared/models/types/movie'
 
 interface WatchlistState {
@@ -7,6 +8,25 @@ interface WatchlistState {
   addMovie: (movie: Movie) => void
   removeMovie: (movieId: number) => void
   clearWatchlist: () => void
+}
+
+const getWatchlistStorageKey = () => {
+  const token = useAuthStore.getState().token
+
+  return token ? `watchlist-storage-${token}` : 'watchlist-storage-guest'
+}
+
+const watchlistStorage = {
+  getItem: () => {
+    const key = getWatchlistStorageKey()
+    return localStorage.getItem(key)
+  },
+  setItem: (_name: string, value: string) => {
+    localStorage.setItem(getWatchlistStorageKey(), value)
+  },
+  removeItem: () => {
+    localStorage.removeItem(getWatchlistStorageKey())
+  },
 }
 
 export const useWatchlistStore = create<WatchlistState>()(
@@ -27,6 +47,25 @@ export const useWatchlistStore = create<WatchlistState>()(
     }),
     {
       name: 'watchlist-storage',
+      storage: createJSONStorage(() => watchlistStorage),
+      partialize: (state) => ({ movies: state.movies }),
     },
   ),
 )
+
+if (typeof window !== 'undefined') {
+  let previousToken = useAuthStore.getState().token
+
+  useAuthStore.subscribe((state) => {
+    if (state.token === previousToken) {
+      return
+    }
+
+    previousToken = state.token
+    useWatchlistStore.setState((current) => ({
+      ...current,
+      movies: [],
+    }))
+    void useWatchlistStore.persist.rehydrate()
+  })
+}
