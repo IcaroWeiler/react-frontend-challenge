@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { useNavigate } from '@tanstack/react-router'
 import { getGenreNameById } from '#/features/discovery/models/genres/genres'
 import { sortMovies, type SortDirection, type SortKey } from '../lib/sort'
 import {
@@ -11,9 +12,9 @@ import {
 } from '#/shared/components/ui/table'
 import { Button } from '#/shared/components/ui/button'
 import { useWatchlistStore } from '../store/watchlist'
-import { redirect } from '@tanstack/react-router'
 
 export function WatchlistTable() {
+  const navigate = useNavigate()
   const [sortKey, setSortKey] = useState<SortKey>('title')
   const [sortDirection, setSortDirection] = useState<SortDirection>('asc')
   const { movies, removeMovie } = useWatchlistStore()
@@ -33,7 +34,7 @@ export function WatchlistTable() {
   }
 
   const redirectToMovie = (movieId: string) => {
-    redirect({ href: `app/movie/${movieId}` })
+    navigate({ to: '/app/movie/$movieId', params: { movieId } })
   }
 
   return (
@@ -63,6 +64,7 @@ export function WatchlistTable() {
         <TableBody>
           {sortedMovies.map((movie) => (
             <TableRow
+              className="cursor-pointer"
               onClick={() => redirectToMovie(String(movie.id))}
               key={movie.id}
             >
@@ -80,7 +82,10 @@ export function WatchlistTable() {
                   variant="outline"
                   size="icon"
                   aria-label={`Remove ${movie.title}`}
-                  onClick={() => removeMovie(movie.id)}
+                  onClick={(event) => {
+                    event.stopPropagation()
+                    removeMovie(movie.id)
+                  }}
                 >
                   ×
                 </Button>

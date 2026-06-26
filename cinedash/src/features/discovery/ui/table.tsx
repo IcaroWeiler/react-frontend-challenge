@@ -17,6 +17,7 @@ import { DataTablePagination } from './pagination'
 import { useQuery } from '@tanstack/react-query'
 import { fetchTmdbDiscoverMovies } from '../api/movies'
 import { useState } from 'react'
+import { useNavigate } from '@tanstack/react-router'
 import type { Filter } from '../models/types/filter'
 import { Skeleton } from '#/shared/components/ui/skeleton'
 
@@ -25,6 +26,7 @@ interface MoviesTableProps {
 }
 
 export function MoviesTable({ filters }: MoviesTableProps) {
+  const navigate = useNavigate()
   const [pagination, setPagination] = useState({
     pageIndex: 0,
     pageSize: 10,
@@ -100,6 +102,13 @@ export function MoviesTable({ filters }: MoviesTableProps) {
               <TableRow
                 key={row.id}
                 data-state={row.getIsSelected() && 'selected'}
+                className="cursor-pointer"
+                onClick={() =>
+                  navigate({
+                    to: '/app/movie/$movieId',
+                    params: { movieId: String(row.original.id) },
+                  })
+                }
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell key={cell.id}>
