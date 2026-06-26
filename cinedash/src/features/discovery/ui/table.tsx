@@ -20,6 +20,7 @@ import { useState } from 'react'
 import { useNavigate } from '@tanstack/react-router'
 import type { Filter } from '../models/types/filter'
 import { Skeleton } from '#/shared/components/ui/skeleton'
+import { useDebounce } from '#/app/hooks/debounce'
 
 interface MoviesTableProps {
   filters: Partial<Filter>
@@ -39,24 +40,29 @@ export function MoviesTable({ filters }: MoviesTableProps) {
     pageIndex: 0,
     pageSize: 10,
   })
+  const { debouncedValue: debouncedFilters, queryEnabled } = useDebounce(
+    filters,
+    { delay: 400 },
+  )
 
   const { data, isLoading } = useQuery({
+    enabled: queryEnabled,
     queryKey: [
       'movies',
       pagination.pageIndex,
       pagination.pageSize,
-      filters.with_genres ?? '',
-      filters['vote_average.gte'] ?? '',
-      filters['release_date.gte']?.toISOString() ?? '',
-      filters['release_date.lte']?.toISOString() ?? '',
+      debouncedFilters.with_genres ?? '',
+      debouncedFilters['vote_average.gte'] ?? '',
+      debouncedFilters['release_date.gte']?.toISOString() ?? '',
+      debouncedFilters['release_date.lte']?.toISOString() ?? '',
     ],
     queryFn: () =>
       fetchTmdbDiscoverMovies({
         page: pagination.pageIndex + 1,
-        with_genres: filters.with_genres || undefined,
-        'vote_average.gte': filters['vote_average.gte'] || undefined,
-        'release_date.gte': filters['release_date.gte'] || undefined,
-        'release_date.lte': filters['release_date.lte'] || undefined,
+        with_genres: debouncedFilters.with_genres || undefined,
+        'vote_average.gte': debouncedFilters['vote_average.gte'] || undefined,
+        'release_date.gte': debouncedFilters['release_date.gte'] || undefined,
+        'release_date.lte': debouncedFilters['release_date.lte'] || undefined,
       }),
   })
 
