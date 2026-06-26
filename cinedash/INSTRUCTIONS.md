@@ -54,38 +54,6 @@ npm run generate-routes
 npm run test
 ```
 
-### 5. Build de produção
-
-```bash
-npm run build
-```
-
-### 6. Preview da build
-
-```bash
-npm run preview
-```
-
-## Comandos úteis
-
-- Lint:
-
-```bash
-npm run lint
-```
-
-- Formatar código:
-
-```bash
-npm run format
-```
-
-- Verificar formatação:
-
-```bash
-npm run check
-```
-
 ## Observações
 
 - O projeto utiliza autenticação sem backend, apropriada para contexto de desafio/protótipo.
