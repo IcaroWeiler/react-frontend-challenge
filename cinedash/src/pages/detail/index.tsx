@@ -46,22 +46,13 @@ export function MovieDetailPage({ movieId }: MovieDetailPageProps) {
             ></Poster>
 
             <div className="flex flex-col gap-2">
-              <MovieInfo
-                title={movie.title}
-                release_date={movie.release_date}
-                overview={movie.overview}
-                vote_average={movie.vote_average}
-                genres={movie.genres}
-                runtime={movie.runtime}
-              ></MovieInfo>
+              <MovieInfo movie={movie}></MovieInfo>
 
               <Button className="max-w-50">Add to Watchlist</Button>
             </div>
           </div>
 
-          <div>
-            {movie.videos && <Trailer videos={movie.videos.results}></Trailer>}
-          </div>
+          <div>{movie.videos && <Trailer videos={movie.videos}></Trailer>}</div>
         </div>
       ) : null}
     </div>
