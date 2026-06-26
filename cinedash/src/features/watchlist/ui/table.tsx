@@ -11,6 +11,7 @@ import {
 } from '#/shared/components/ui/table'
 import { Button } from '#/shared/components/ui/button'
 import { useWatchlistStore } from '../store/watchlist'
+import { redirect } from '@tanstack/react-router'
 
 export function WatchlistTable() {
   const [sortKey, setSortKey] = useState<SortKey>('title')
@@ -29,6 +30,10 @@ export function WatchlistTable() {
 
     setSortKey(key)
     setSortDirection('asc')
+  }
+
+  const redirectToMovie = (movieId: string) => {
+    redirect({ href: `app/movie/${movieId}` })
   }
 
   return (
@@ -57,7 +62,10 @@ export function WatchlistTable() {
         </TableHeader>
         <TableBody>
           {sortedMovies.map((movie) => (
-            <TableRow key={movie.id}>
+            <TableRow
+              onClick={() => redirectToMovie(String(movie.id))}
+              key={movie.id}
+            >
               <TableCell>{movie.title}</TableCell>
               <TableCell>{movie.release_date}</TableCell>
               <TableCell>

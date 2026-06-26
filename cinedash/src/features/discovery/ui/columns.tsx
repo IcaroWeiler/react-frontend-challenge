@@ -1,4 +1,5 @@
 import { createColumnHelper } from '@tanstack/react-table'
+import { Link } from '@tanstack/react-router'
 import type { Movie } from '../../../shared/models/types/movie'
 import { getGenreNameById } from '../models/genres/genres'
 import { Button } from '#/shared/components/ui/button'
@@ -9,7 +10,15 @@ const columnHelper = createColumnHelper<Movie>()
 export const columns = [
   columnHelper.accessor('title', {
     header: () => 'Title',
-    cell: (info) => info.getValue(),
+    cell: (info) => (
+      <Link
+        to="/app/movie/$movieId"
+        params={{ movieId: String(info.row.original.id) }}
+        className="font-medium text-accent hover:underline"
+      >
+        {info.getValue()}
+      </Link>
+    ),
   }),
   columnHelper.accessor((row) => row.release_date, {
     id: 'release_date',

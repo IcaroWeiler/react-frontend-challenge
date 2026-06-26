@@ -20,9 +20,11 @@ function RouteComponent() {
   }, [token, loggedIn])
 
   return (
-    <div>
+    <div className="flex min-h-screen flex-col">
       <Header />
-      <Outlet />
+      <main className="flex-1">
+        <Outlet />
+      </main>
       <Footer />
     </div>
   )

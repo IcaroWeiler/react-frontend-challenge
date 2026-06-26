@@ -1,3 +1,4 @@
+import { MovieDetailPage } from '#/pages/detail'
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/app/movie/$movieId')({
@@ -5,5 +6,7 @@ export const Route = createFileRoute('/app/movie/$movieId')({
 })
 
 function RouteComponent() {
-  return <div>Hello "/app/movie/$movieId"!</div>
+  const { movieId } = Route.useParams()
+
+  return <MovieDetailPage movieId={Number(movieId)} />
 }
