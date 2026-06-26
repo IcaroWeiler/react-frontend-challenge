@@ -25,7 +25,6 @@ export function MovieDetailPage({ movieId }: MovieDetailPageProps) {
   } = useQuery({
     queryKey: ['movie-detail', movieId],
     queryFn: () => fetchTmdbMovieDetails(movieId),
-    enabled: Number.isFinite(movieId),
   })
 
   const addAndNotify = (movie: Movie) => {
@@ -36,8 +35,8 @@ export function MovieDetailPage({ movieId }: MovieDetailPageProps) {
   return (
     <div className="mx-auto flex items-center justify-center max-w-6xl flex-col gap-6 p-6">
       {isLoading ? (
-        <div className="space-y-4">
-          <Skeleton className="h-10 w-2/3" />
+        <div className="h-50 flex flex-col gap-2 w-full">
+          <Skeleton className="h-10 w-full" />
           <Skeleton className="h-5 w-1/2" />
           <Skeleton className="h-24 w-full" />
         </div>
