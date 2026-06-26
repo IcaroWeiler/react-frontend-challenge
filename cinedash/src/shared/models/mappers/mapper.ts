@@ -13,6 +13,14 @@ export interface TmdbMovieDetailResponse {
   videos?: {
     results?: MovieVideo[]
   }
+  credits?: {
+    cast?: Array<{
+      id: number
+      name: string
+      character?: string
+      profile_path?: string | null
+    }>
+  }
 }
 
 export function mapMovieApiToMovie(payload: TmdbMovieDetailResponse): Movie {
@@ -37,6 +45,12 @@ export function mapMovieApiToMovie(payload: TmdbMovieDetailResponse): Movie {
       size: video.size,
       type: video.type,
       official: video.official,
+    })),
+    cast: payload.credits?.cast?.map((member) => ({
+      id: member.id,
+      name: member.name,
+      character: member.character,
+      profile_path: member.profile_path ?? undefined,
     })),
   }
 }

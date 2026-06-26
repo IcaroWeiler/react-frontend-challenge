@@ -11,7 +11,7 @@ export async function fetchTmdbMovieDetails(
   movieId: number | string,
 ): Promise<Movie> {
   const response = await fetch(
-    `${TMDB_BASE_URL}/movie/${movieId}?append_to_response=videos`,
+    `${TMDB_BASE_URL}/movie/${movieId}?append_to_response=videos,credits`,
     {
       headers: HEADERS,
     },

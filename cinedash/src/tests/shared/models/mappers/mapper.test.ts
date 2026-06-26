@@ -32,6 +32,16 @@ describe('mapMovieApiToMovie', () => {
           },
         ],
       },
+      credits: {
+        cast: [
+          {
+            id: 101,
+            name: 'Actor One',
+            character: 'Lead',
+            profile_path: '/actor-one.png',
+          },
+        ],
+      },
     }
 
     expect(mapMovieApiToMovie(payload)).toEqual({
@@ -58,6 +68,14 @@ describe('mapMovieApiToMovie', () => {
           official: true,
         },
       ],
+      cast: [
+        {
+          id: 101,
+          name: 'Actor One',
+          character: 'Lead',
+          profile_path: '/actor-one.png',
+        },
+      ],
     })
   })
 
@@ -82,6 +100,7 @@ describe('mapMovieApiToMovie', () => {
       runtime: undefined,
       genres: [{ id: 12, name: 'Adventure' }],
       videos: undefined,
+      cast: undefined,
     })
   })
 })

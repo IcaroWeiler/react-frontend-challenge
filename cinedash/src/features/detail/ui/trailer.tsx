@@ -1,4 +1,4 @@
-import type { MovieVideo } from '../api/getMovie'
+import type { MovieVideo } from '#/shared/models/types/movie'
 import { getTrailer, getVideoEmbedUrl } from '../lib/getTrailer'
 
 interface TrailerProps {
@@ -11,7 +11,7 @@ export function Trailer({ videos }: TrailerProps) {
   const embedUrl = getVideoEmbedUrl(trailer)
 
   return (
-    <div className="mt-3">
+    <div className="mt-5">
       {trailer ? (
         <div>
           <iframe

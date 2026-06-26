@@ -40,6 +40,23 @@ export function MovieInfo({ movie }: MovieInfoProps) {
       <div className="text-sm">
         <p>Runtime: {movie.runtime ? `${movie.runtime} min` : 'Unavailable'}</p>
       </div>
+
+      {movie.cast?.length ? (
+        <div className="space-y-2">
+          <p className="text-sm font-semibold">Cast</p>
+          <div className="flex flex-wrap gap-2">
+            {movie.cast.slice(0, 10).map((member) => (
+              <span
+                key={member.id}
+                className="rounded-full border border-(--line) bg-(--chip-bg) px-3 py-1 text-sm"
+              >
+                {member.name}
+                {member.character ? ` as ${member.character}` : ''}
+              </span>
+            ))}
+          </div>
+        </div>
+      ) : null}
     </div>
   )
 }

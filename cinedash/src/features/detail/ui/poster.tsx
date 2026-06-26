@@ -1,11 +1,11 @@
-import type { TmdbMovieDetailResponse } from '../api/getMovie'
+import type { TmdbMovieDetailResponse } from '#/shared/models/mappers/mapper'
 
 export function Poster({
   poster_path,
   title,
 }: Partial<TmdbMovieDetailResponse>) {
   return (
-    <div className="rounded-xl border border-(--line) bg-(--panel) p-4">
+    <div className="rounded-xl ">
       {poster_path ? (
         <img
           src={`https://image.tmdb.org/t/p/w500${poster_path}`}

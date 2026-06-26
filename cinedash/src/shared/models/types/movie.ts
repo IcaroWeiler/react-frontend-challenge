@@ -8,6 +8,13 @@ export interface MovieVideo {
   official: boolean
 }
 
+export interface MovieCastMember {
+  id: number
+  name: string
+  character?: string
+  profile_path?: string
+}
+
 export interface Movie {
   id: number
   title: string
@@ -19,4 +26,5 @@ export interface Movie {
   runtime?: number
   genres?: Array<{ id: number; name: string }>
   videos?: MovieVideo[]
+  cast?: MovieCastMember[]
 }
