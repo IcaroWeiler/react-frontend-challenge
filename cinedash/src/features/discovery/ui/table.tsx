@@ -16,11 +16,12 @@ import {
 import { DataTablePagination } from './pagination'
 import { useQuery } from '@tanstack/react-query'
 import { fetchTmdbDiscoverMovies } from '../api/movies'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from '@tanstack/react-router'
 import type { Filter } from '../models/types/filter'
 import { Skeleton } from '#/shared/components/ui/skeleton'
 import { useDebounce } from '#/app/hooks/debounce'
+import { toast } from 'sonner'
 
 interface MoviesTableProps {
   filters: Partial<Filter>
@@ -45,7 +46,7 @@ export function MoviesTable({ filters }: MoviesTableProps) {
     { delay: 400 },
   )
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isError, error } = useQuery({
     enabled: queryEnabled,
     queryKey: [
       'movies',
@@ -65,6 +66,19 @@ export function MoviesTable({ filters }: MoviesTableProps) {
         'release_date.lte': debouncedFilters['release_date.lte'] || undefined,
       }),
   })
+
+  useEffect(() => {
+    if (!isError) {
+      return
+    }
+
+    const message =
+      error instanceof Error
+        ? `Unable to load discovery movies: ${error.message}`
+        : 'Unable to load discovery movies.'
+
+    toast.error(message)
+  }, [isError, error])
 
   const table = useReactTable({
     data: data?.results ?? [],

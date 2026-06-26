@@ -9,6 +9,7 @@ import { CirclePlus } from 'lucide-react'
 import { useWatchlistStore } from '#/features/watchlist/store/watchlist'
 import type { Movie } from '#/shared/models/types/movie'
 import { toast } from 'sonner'
+import { useEffect } from 'react'
 
 interface MovieDetailPageProps {
   movieId: number
@@ -31,6 +32,19 @@ export function MovieDetailPage({ movieId }: MovieDetailPageProps) {
     addMovie(movie)
     toast.success(`${movie.title} added to watchlist`)
   }
+
+  useEffect(() => {
+    if (!isError) {
+      return
+    }
+
+    const message =
+      error instanceof Error
+        ? `Unable to load movie details: ${error.message}`
+        : 'Unable to load movie details.'
+
+    toast.error(message)
+  }, [isError, error])
 
   return (
     <div className="mx-auto flex items-center justify-center max-w-6xl flex-col gap-6 p-6">

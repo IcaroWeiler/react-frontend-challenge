@@ -19,6 +19,7 @@ import { fetchTmdbSearchMovies } from '../api/movies'
 import type { SearchFilter } from '../models/types/filter'
 import { columns } from './columns'
 import { DataTablePagination } from '#/features/discovery/ui/pagination'
+import { toast } from 'sonner'
 
 interface SearchTableProps {
   filters: Partial<SearchFilter>
@@ -43,7 +44,7 @@ export function SearchTable({ filters }: SearchTableProps) {
     setPagination((prev) => ({ ...prev, pageIndex: 0 }))
   }, [query])
 
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, isError, error } = useQuery({
     enabled: query.length > 0,
     queryKey: [
       'search-movies',
@@ -58,6 +59,19 @@ export function SearchTable({ filters }: SearchTableProps) {
         include_adult: false,
       }),
   })
+
+  useEffect(() => {
+    if (!isError || !query.length) {
+      return
+    }
+
+    const message =
+      error instanceof Error
+        ? `Unable to search movies: ${error.message}`
+        : 'Unable to search movies.'
+
+    toast.error(message)
+  }, [isError, error, query])
 
   const table = useReactTable({
     data: data?.results ?? [],
