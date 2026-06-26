@@ -36,7 +36,7 @@ export const Filters = ({ filters, onFiltersChange }: FiltersProps) => {
     }
 
   return (
-    <div className="flex gap-4">
+    <div className="flex gap-4 flex-wrap">
       <Combobox
         multiple
         value={selectedGenres}

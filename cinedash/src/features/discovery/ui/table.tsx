@@ -25,6 +25,14 @@ interface MoviesTableProps {
   filters: Partial<Filter>
 }
 
+const responsiveColumnClasses: Record<string, string> = {
+  title: 'whitespace-normal',
+  release_date: 'hidden sm:table-cell',
+  vote_average: 'hidden sm:table-cell',
+  genre_ids: 'hidden md:table-cell',
+  add_to_watchlist: 'w-16',
+}
+
 export function MoviesTable({ filters }: MoviesTableProps) {
   const navigate = useNavigate()
   const [pagination, setPagination] = useState({
@@ -64,6 +72,9 @@ export function MoviesTable({ filters }: MoviesTableProps) {
     getCoreRowModel: getCoreRowModel(),
   })
 
+  const getColumnClassName = (columnId: string) =>
+    responsiveColumnClasses[columnId] ?? ''
+
   return (
     <div className="p-2">
       <Table>
@@ -72,7 +83,10 @@ export function MoviesTable({ filters }: MoviesTableProps) {
             <TableRow key={headerGroup.id}>
               {headerGroup.headers.map((header) => {
                 return (
-                  <TableHead key={header.id}>
+                  <TableHead
+                    key={header.id}
+                    className={getColumnClassName(header.column.id)}
+                  >
                     {header.isPlaceholder
                       ? null
                       : flexRender(
@@ -90,8 +104,11 @@ export function MoviesTable({ filters }: MoviesTableProps) {
           {isLoading ? (
             Array.from({ length: pagination.pageSize }).map((_, index) => (
               <TableRow key={`skeleton-${index}`}>
-                {columns.map((_, columnIndex) => (
-                  <TableCell key={`${index}-${columnIndex}`}>
+                {table.getAllLeafColumns().map((column, columnIndex) => (
+                  <TableCell
+                    key={`${index}-${columnIndex}`}
+                    className={getColumnClassName(column.id)}
+                  >
                     <Skeleton className="h-6 w-full" />
                   </TableCell>
                 ))}
@@ -111,7 +128,10 @@ export function MoviesTable({ filters }: MoviesTableProps) {
                 }
               >
                 {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
+                  <TableCell
+                    key={cell.id}
+                    className={getColumnClassName(cell.column.id)}
+                  >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
                   </TableCell>
                 ))}

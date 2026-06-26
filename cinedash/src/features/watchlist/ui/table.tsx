@@ -13,6 +13,14 @@ import {
 import { Button } from '#/shared/components/ui/button'
 import { useWatchlistStore } from '../store/watchlist'
 
+const watchlistColumnClasses: Record<string, string> = {
+  title: 'whitespace-normal',
+  release_date: 'hidden sm:table-cell',
+  genre: 'hidden md:table-cell',
+  rating: 'hidden sm:table-cell',
+  remove: 'w-16',
+}
+
 export function WatchlistTable() {
   const navigate = useNavigate()
   const [sortKey, setSortKey] = useState<SortKey>('title')
@@ -37,6 +45,9 @@ export function WatchlistTable() {
     navigate({ to: '/app/movie/$movieId', params: { movieId } })
   }
 
+  const getColumnClassName = (columnId: string) =>
+    watchlistColumnClasses[columnId] ?? ''
+
   return (
     <div className="space-y-4 p-2">
       <div className="flex flex-wrap gap-2">
@@ -54,11 +65,21 @@ export function WatchlistTable() {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead>Title</TableHead>
-            <TableHead>Release Date</TableHead>
-            <TableHead>Genres</TableHead>
-            <TableHead>Rating</TableHead>
-            <TableHead className="text-center">Remove</TableHead>
+            <TableHead className={getColumnClassName('title')}>Title</TableHead>
+            <TableHead className={getColumnClassName('release_date')}>
+              Release Date
+            </TableHead>
+            <TableHead className={getColumnClassName('genre')}>
+              Genres
+            </TableHead>
+            <TableHead className={getColumnClassName('rating')}>
+              Rating
+            </TableHead>
+            <TableHead
+              className={`text-center ${getColumnClassName('remove')}`}
+            >
+              Remove
+            </TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -68,16 +89,24 @@ export function WatchlistTable() {
               onClick={() => redirectToMovie(String(movie.id))}
               key={movie.id}
             >
-              <TableCell>{movie.title}</TableCell>
-              <TableCell>{movie.release_date}</TableCell>
-              <TableCell>
+              <TableCell className={getColumnClassName('title')}>
+                {movie.title}
+              </TableCell>
+              <TableCell className={getColumnClassName('release_date')}>
+                {movie.release_date}
+              </TableCell>
+              <TableCell className={getColumnClassName('genre')}>
                 {movie.genre_ids
                   ?.map((id) => getGenreNameById(id))
                   .filter((value): value is string => Boolean(value))
                   .join(', ')}
               </TableCell>
-              <TableCell>{movie.vote_average.toFixed(1)}</TableCell>
-              <TableCell className="text-center">
+              <TableCell className={getColumnClassName('rating')}>
+                {movie.vote_average.toFixed(1)}
+              </TableCell>
+              <TableCell
+                className={`text-center ${getColumnClassName('remove')}`}
+              >
                 <Button
                   variant="outline"
                   size="icon"
