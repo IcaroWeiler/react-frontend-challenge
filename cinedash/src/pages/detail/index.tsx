@@ -1,18 +1,22 @@
 import { useQuery } from '@tanstack/react-query'
-import { Link } from '@tanstack/react-router'
 import { Skeleton } from '#/shared/components/ui/skeleton'
 import { Poster } from '#/features/detail/ui/poster'
 import { fetchTmdbMovieDetails } from '#/features/detail/api/getMovie'
 import { MovieInfo } from '#/features/detail/ui/info'
 import { Button } from '#/shared/components/ui/button'
-import { getTrailer, getVideoEmbedUrl } from '#/features/detail/lib/getTrailer'
 import { Trailer } from '#/features/detail/ui/trailer'
+import { CirclePlus } from 'lucide-react'
+import { useWatchlistStore } from '#/features/watchlist/store/watchlist'
+import type { Movie } from '#/shared/models/types/movie'
+import { toast } from 'sonner'
 
 interface MovieDetailPageProps {
   movieId: number
 }
 
 export function MovieDetailPage({ movieId }: MovieDetailPageProps) {
+  const addMovie = useWatchlistStore((state) => state.addMovie)
+
   const {
     data: movie,
     isLoading,
@@ -23,6 +27,11 @@ export function MovieDetailPage({ movieId }: MovieDetailPageProps) {
     queryFn: () => fetchTmdbMovieDetails(movieId),
     enabled: Number.isFinite(movieId),
   })
+
+  const addAndNotify = (movie: Movie) => {
+    addMovie(movie)
+    toast.success(`${movie.title} added to watchlist`)
+  }
 
   return (
     <div className="mx-auto flex items-center justify-center max-w-6xl flex-col gap-6 p-6">
@@ -48,7 +57,10 @@ export function MovieDetailPage({ movieId }: MovieDetailPageProps) {
             <div className="flex flex-col gap-2">
               <MovieInfo movie={movie}></MovieInfo>
 
-              <Button className="max-w-50">Add to Watchlist</Button>
+              <Button onClick={() => addAndNotify(movie)} className="max-w-50">
+                <CirclePlus />
+                Add to Watchlist
+              </Button>
             </div>
           </div>
 

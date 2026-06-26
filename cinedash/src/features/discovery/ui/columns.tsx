@@ -1,5 +1,6 @@
 import { createColumnHelper } from '@tanstack/react-table'
 import { Link } from '@tanstack/react-router'
+import { toast } from 'sonner'
 import type { Movie } from '../../../shared/models/types/movie'
 import { getGenreNameById } from '../models/genres/genres'
 import { Button } from '#/shared/components/ui/button'
@@ -55,7 +56,10 @@ export const columns = [
             size="icon"
             className="size-8"
             aria-label={`Add ${movie.title} to watchlist`}
-            onClick={() => addMovie(movie)}
+            onClick={() => {
+              addMovie(movie)
+              toast.success(`${movie.title} added to watchlist`)
+            }}
           >
             +
           </Button>

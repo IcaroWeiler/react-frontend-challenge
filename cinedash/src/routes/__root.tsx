@@ -9,6 +9,7 @@ import appCss from '#/app/theme/styles/styles.css?url'
 import { ThemeProvider } from '#/app/theme/providers/theme'
 import { ANTI_FLICKER_THEME_SCRIPT } from '#/app/theme/helpers/themeHelper'
 import { QueryClientProviderWrapper } from '#/app/theme/providers/queryClientProvider'
+import { Toaster } from 'sonner'
 
 export const Route = createRootRoute({
   head: () => ({
@@ -48,6 +49,7 @@ function RootDocument() {
       <body className="font-sans antialiased [overflow-wrap:anywhere] selection:bg-[rgba(79,184,178,0.24)]">
         <QueryClientProviderWrapper>
           <ThemeProvider>
+            <Toaster />
             <Outlet />
           </ThemeProvider>
         </QueryClientProviderWrapper>
