@@ -56,7 +56,8 @@ export const columns = [
             size="icon"
             className="size-8"
             aria-label={`Add ${movie.title} to watchlist`}
-            onClick={() => {
+            onClick={(event) => {
+              event.stopPropagation()
               addMovie(movie)
               toast.success(`${movie.title} added to watchlist`)
             }}
